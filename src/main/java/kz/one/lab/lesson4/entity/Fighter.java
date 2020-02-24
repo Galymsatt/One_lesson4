@@ -7,25 +7,28 @@ import javax.persistence.*;
 
 @Component
 @Getter
-@Setter
 @Entity
 @Table(name = "t_fighters")
 public class Fighter {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.AUTO)//bazada avtomatom koydyk nege myna zherde identiti turdy?
     @Column(name = "id")
     private Long id;
+    @Setter
 
 //    @Builder.Default
     @Column(name = "name")
     String name = "Незванный Гость";
+    @Setter
 
     @Column(name = "strength")
     int strength;
+    @Setter
 
     @Column(name = "agility")
     int agility;
+    @Setter
 
     @Column(name = "skill")
     int skill;

@@ -3,6 +3,7 @@ package kz.one.lab.lesson4.entity;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
+import org.springframework.boot.context.properties.bind.DefaultValue;
 import org.springframework.stereotype.Component;
 
 import javax.persistence.*;
@@ -16,8 +17,10 @@ import java.util.List;
 @Table(name = "t_arenas")
 public class Arena {
 
+
+
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "id")
     private Long id;
 

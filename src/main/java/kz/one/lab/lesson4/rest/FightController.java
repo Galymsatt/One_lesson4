@@ -13,6 +13,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.annotation.PostConstruct;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -37,22 +38,24 @@ public class FightController {
 
     ////////////////////////////////////////////////////////////////////////
 
-
+    @PostConstruct
+    public void test(){
+        arenaRepository.save(new Arena());
+    }
     @ApiOperation("Add Fighter")
-    @PutMapping(value = "fight", produces = MediaType.APPLICATION_JSON_VALUE)
+    @DeleteMapping(value = "fight", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Arena> helloOneLab(@RequestBody Fighter fighter)
     {
 
-        fighterRepository.save(fighter);
-        Long index = fighterRepository.count();
+        Fighter resp = fighterRepository.save(fighter);
 
         //arena.getFighters().add(fighter);
 //        Arena arena = arenaRepository.getOne(2L);
-        Arena arena1 = arenaRepository.findById(1L).get();
+        Arena arena1 = arenaRepository.findAll().get(0);
 //        List<Arena> arenas = arenaRepository.findAll();
 //        for(Arena a : arenas)
 //            System.out.println("Arena id, name: "+a.getId()+", "+a.getName());
-        arena1.getFighters().add(fighterRepository.getOne(index));
+        arena1.getFighters().add(resp);
         arenaRepository.save(arena1);
 
 
@@ -64,7 +67,7 @@ public class FightController {
     @PostMapping(value = "check", produces = MediaType.APPLICATION_JSON_VALUE)
     public List<Fighter> check(){
 
-        Arena arena = arenaRepository.getOne(1L);
+        Arena arena = arenaRepository.findAll().get(0);
 
         List<Fighter> fighters =arena.getFighters();
         //вывели имена всех бойсов в арене, при этом не меняя нижнюю строку
@@ -72,7 +75,7 @@ public class FightController {
         // выбросить в лузеров из бойцов всех тех, кто не прошел допинг контроль
 
 //        List<Fighter> losers = new ArrayList<>();
-        Arena losers = arenaRepository.getOne(3L);
+        Arena losers = arenaRepository.findAll().get(1);
 
 //        for(Fighter f : fighters)//Добавление в лузеры
 //            if(dopingService.checkFigher(f)) {
@@ -89,6 +92,9 @@ public class FightController {
                 return false;
         });
         arenaRepository.save(losers);
+
+        arena.setFighters(fighters);
+        arenaRepository.save(arena);
 
         return losers.getFighters();
     }
